@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const backToTopBtn = document.getElementById("back-to-top");
   
   // Theme state
-  let currentTheme = localStorage.getItem("theme") || "dark";
+  let currentTheme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", currentTheme);
   updateThemeIcon(currentTheme);
 
@@ -198,8 +198,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fillStyle = document.documentElement.getAttribute("data-theme") === "light" 
-        ? "rgba(0, 119, 182, 0.4)" 
-        : "rgba(0, 180, 216, 0.6)";
+        ? "rgba(29, 78, 216, 0.35)" 
+        : "rgba(96, 165, 250, 0.6)";
       ctx.fill();
     }
   }
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Draw grid junctions lines
     const theme = document.documentElement.getAttribute("data-theme");
-    ctx.strokeStyle = theme === "light" ? "rgba(0, 119, 182, 0.03)" : "rgba(0, 180, 216, 0.03)";
+    ctx.strokeStyle = theme === "light" ? "rgba(29, 78, 216, 0.04)" : "rgba(96, 165, 250, 0.03)";
     ctx.lineWidth = 1;
     const gridSpacing = 40;
     
@@ -246,8 +246,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ctx.lineTo(particles[j].x, particles[j].y);
           const alpha = (1 - dist / connectionDistance) * 0.15;
           ctx.strokeStyle = theme === "light" 
-            ? `rgba(0, 119, 182, ${alpha})` 
-            : `rgba(0, 180, 216, ${alpha})`;
+            ? `rgba(29, 78, 216, ${alpha})` 
+            : `rgba(96, 165, 250, ${alpha})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -702,7 +702,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initCharts(theme) {
     const isDark = theme === "dark";
-    const textLabelColor = isDark ? "#94a3b8" : "#475569";
+    const textLabelColor = isDark ? "#94a3b8" : "#64748b";
     const gridLinesColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(15, 23, 42, 0.06)";
 
     // Chart.js global style sets
@@ -722,16 +722,16 @@ document.addEventListener("DOMContentLoaded", () => {
           {
             label: "Topics Completed",
             data: [6, 7, 7, 9, 15, 16],
-            backgroundColor: isDark ? "rgba(0, 180, 216, 0.65)" : "rgba(0, 119, 182, 0.75)",
-            borderColor: isDark ? "#00b4d8" : "#0077b6",
+            backgroundColor: isDark ? "rgba(96, 165, 250, 0.65)" : "rgba(29, 78, 216, 0.75)",
+            borderColor: isDark ? "#60a5fa" : "#1d4ed8",
             borderWidth: 1.5,
             borderRadius: 6
           },
           {
             label: "Labs Executed",
             data: [1, 2, 2, 3, 2, 2],
-            backgroundColor: isDark ? "rgba(16, 185, 129, 0.65)" : "rgba(16, 185, 129, 0.75)",
-            borderColor: "#10b981",
+            backgroundColor: isDark ? "rgba(16, 185, 129, 0.65)" : "rgba(5, 150, 105, 0.75)",
+            borderColor: isDark ? "#10b981" : "#059669",
             borderWidth: 1.5,
             borderRadius: 6
           }
@@ -753,8 +753,8 @@ document.addEventListener("DOMContentLoaded", () => {
             cornerRadius: 8,
             backgroundColor: isDark ? "rgba(8, 18, 38, 0.95)" : "rgba(255, 255, 255, 0.95)",
             titleColor: isDark ? "#fff" : "#0f172a",
-            bodyColor: isDark ? "#94a3b8" : "#475569",
-            borderColor: "rgba(0, 180, 216, 0.2)",
+            bodyColor: isDark ? "#94a3b8" : "#64748b",
+            borderColor: isDark ? "rgba(96, 165, 250, 0.2)" : "rgba(29, 78, 216, 0.15)",
             borderWidth: 1
           }
         },
