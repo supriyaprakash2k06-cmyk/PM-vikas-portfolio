@@ -1726,6 +1726,15 @@ section:last-of-type {
   color: var(--text-primary);
 }
 
+.contact-info-details p a {
+  transition: color 0.2s ease;
+}
+
+.contact-info-details p a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+
 .contact-form {
   display: flex;
   flex-direction: column;
