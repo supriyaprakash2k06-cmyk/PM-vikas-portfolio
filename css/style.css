@@ -749,10 +749,15 @@ section:last-of-type {
   color: var(--text-secondary);
 }
 
+.software-tag {
+  background: var(--accent-subtle);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: var(--accent-color);
+}
+
 .module-skills-list {
   list-style: none;
 }
-
 .module-skills-list li {
   font-size: 0.85rem;
   color: var(--text-secondary);

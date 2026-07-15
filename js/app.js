@@ -537,6 +537,12 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "glass-card project-card";
       
       const compsList = project.comps.map(c => `<span class="module-tag">${c}</span>`).join("");
+      const softwareList = project.software 
+        ? `<div class="timeline-section-title">Software Requirements</div>
+           <div class="module-tags" style="margin-bottom: 1.5rem;">${project.software.map(s => `<span class="module-tag software-tag">${s}</span>`).join("")}</div>`
+        : "";
+
+      const btnText = project.software ? "View Architecture & Python Code" : "View Circuit & Firmware";
 
       card.innerHTML = `
         <span class="project-tag"><i class="fas fa-lightbulb"></i> Capstone Project ${index + 1}</span>
@@ -546,6 +552,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
         <div class="timeline-section-title">Hardware Components</div>
         <div class="module-tags" style="margin-bottom: 1.5rem;">${compsList}</div>
+
+        ${softwareList}
 
         <div class="timeline-section-title">Working Principle</div>
         <p class="timeline-text" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">${project.principle}</p>
@@ -557,7 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <button class="lab-action-btn" onclick="openProjectCodeModal(${index})" style="margin-top: auto;">
           <i class="fas fa-code"></i>
-          <span>View Circuit & Firmware</span>
+          <span>${btnText}</span>
         </button>
       `;
       projectsGrid.appendChild(card);
@@ -570,6 +578,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modalTitle.textContent = project.name;
     const compsBadges = project.comps.map(c => `<span class="module-tag">${c}</span>`).join("");
+    
+    const softwareBadges = project.software
+      ? `<div class="modal-section">
+          <div class="modal-section-title"><i class="fas fa-laptop-code"></i> Software Requirements</div>
+          <div class="module-tags">${project.software.map(s => `<span class="module-tag software-tag">${s}</span>`).join("")}</div>
+         </div>`
+      : "";
+
+    const bomTitle = project.software ? "System Hardware Components" : "Bill of Materials (BOM)";
+    const circuitTitle = project.software ? "System Connections & Data Flow" : "Hardware Connections & Diagram";
+    const codeTitle = project.software ? "AI Inference Code (Python)" : "Main Firmware Code";
 
     modalDetails.innerHTML = `
       <div class="modal-section">
@@ -578,9 +597,11 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title"><i class="fas fa-boxes"></i> Bill of Materials (BOM)</div>
+        <div class="modal-section-title"><i class="fas fa-boxes"></i> ${bomTitle}</div>
         <div class="module-tags">${compsBadges}</div>
       </div>
+
+      ${softwareBadges}
 
       <div class="modal-section">
         <div class="modal-section-title"><i class="fas fa-cogs"></i> Working Principle</div>
@@ -588,19 +609,19 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title"><i class="fas fa-project-diagram"></i> Hardware Connections & Diagram</div>
+        <div class="modal-section-title"><i class="fas fa-project-diagram"></i> ${circuitTitle}</div>
         <p class="timeline-text">${project.circuit}</p>
         <div class="map-placeholder-container" style="height: 150px;">
           <div class="map-placeholder-text">
             <i class="fas fa-project-diagram"></i>
             <h5>Fritzing Block Schematic Active</h5>
-            <p>Pinouts mapping ESP8266/ESP32 sensor lines to standard power gates.</p>
+            <p>Pinouts mapping system configuration and interfaces.</p>
           </div>
         </div>
       </div>
 
       <div class="modal-section">
-        <div class="modal-section-title"><i class="fas fa-code"></i> Main Firmware Code</div>
+        <div class="modal-section-title"><i class="fas fa-code"></i> ${codeTitle}</div>
         <div class="code-block-container">
           <button class="code-copy-btn" onclick="copyProjectCode(${index})">
             <i class="far fa-copy"></i> <span>Copy Code</span>
