@@ -676,44 +676,80 @@ document.addEventListener("DOMContentLoaded", () => {
       calendarGrid.appendChild(header);
     });
 
-    // We will render days 1 to 60 as dates in a structured calendar block.
-    // Assuming start offset of 1 day (Monday) for visual aesthetics
-    const startOffset = 1;
-    for (let i = 0; i < startOffset; i++) {
+    // Internship starts June 25, 2026 and ends August 7, 2026 (inclusive)
+    const start = new Date(2026, 5, 25); // June is 5
+    const end = new Date(2026, 7, 7);   // August is 7
+    
+    const dates = [];
+    let current = new Date(start);
+    while (current <= end) {
+      dates.push(new Date(current));
+      current.setDate(current.getDate() + 1);
+    }
+
+    // Align calendar starting day. June 25, 2026 is a Thursday.
+    // Sunday is 0, Monday is 1, ..., Thursday is 4.
+    const startDayIndex = start.getDay();
+    for (let i = 0; i < startDayIndex; i++) {
       const emptyCell = document.createElement("div");
       emptyCell.className = "calendar-cell empty";
       calendarGrid.appendChild(emptyCell);
     }
 
     let presentDaysCount = 0;
-    
-    // Total days: 60
-    for (let dayNum = 1; dayNum <= 60; dayNum++) {
+    const totalDaysCount = dates.length;
+
+    dates.forEach(date => {
       const cell = document.createElement("div");
+      cell.className = "calendar-cell";
       
-      // Attendance pattern: present except weekends (Sundays) and odd sick leaves
-      // Day 7, 14, 21, 28, 35, 42, 49, 56 are Sundays (approximate)
-      // Days 12 and 41 are marked absent as simulated sick leaves
-      const isSunday = (dayNum + startOffset) % 7 === 0;
-      const isAbsent = isSunday || dayNum === 12 || dayNum === 41;
+      const day = date.getDate();
+      const month = date.toLocaleString('default', { month: 'short' });
+      const dayOfWeek = date.getDay(); // 0 is Sunday
+      const isSunday = (dayOfWeek === 0);
+      
+      // July 11 is also a holiday
+      const isJuly11 = (date.getMonth() === 6 && date.getDate() === 11); // Month index 6 is July
+      const isHoliday = isSunday || isJuly11;
 
-      cell.textContent = dayNum;
-
-      if (isAbsent) {
-        cell.className = "calendar-cell absent";
-        cell.title = isSunday ? `Day ${dayNum}: Sunday Holiday` : `Day ${dayNum}: Absent (Medical Leave)`;
+      // Show month header prefix on start day or the 1st of a month
+      if (day === 1 || date.getTime() === start.getTime()) {
+        cell.style.flexDirection = "column";
+        cell.style.lineHeight = "1.1";
+        cell.innerHTML = `<span style="font-size: 0.6rem; opacity: 0.75; font-weight: 500;">${month}</span><span>${day}</span>`;
       } else {
-        cell.className = "calendar-cell present";
-        cell.title = `Day ${dayNum}: Present`;
+        cell.textContent = day;
+      }
+
+      const formattedDate = date.toLocaleDateString('default', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+
+      if (isHoliday) {
+        cell.classList.add("absent");
+        cell.title = isSunday ? `${formattedDate}: Sunday Holiday` : `${formattedDate}: July 11 Holiday`;
+      } else {
+        cell.classList.add("present");
+        cell.title = `${formattedDate}: Present`;
         presentDaysCount++;
       }
       
       calendarGrid.appendChild(cell);
-    }
+    });
 
     // Calculate percentage
-    const pctVal = Math.round((presentDaysCount / 60) * 100);
+    const pctVal = Math.round((presentDaysCount / totalDaysCount) * 100);
     attendancePercentage.textContent = `${pctVal}%`;
+    attendancePercentage.setAttribute("data-count", pctVal);
+
+    // Also update the tag in the header if it exists
+    const attendancePctTag = document.getElementById("attendance-pct-tag");
+    if (attendancePctTag) {
+      attendancePctTag.textContent = `${pctVal}% Present`;
+    }
   }
   
   renderAttendance();
