@@ -697,7 +697,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let presentDaysCount = 0;
-    const totalDaysCount = dates.length;
+    let classDaysCount = 0;
 
     dates.forEach(date => {
       const cell = document.createElement("div");
@@ -729,19 +729,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (isHoliday) {
-        cell.classList.add("absent");
+        cell.classList.add("holiday");
         cell.title = isSunday ? `${formattedDate}: Sunday Holiday` : `${formattedDate}: July 11 Holiday`;
       } else {
         cell.classList.add("present");
         cell.title = `${formattedDate}: Present`;
         presentDaysCount++;
+        classDaysCount++;
       }
       
       calendarGrid.appendChild(cell);
     });
 
-    // Calculate percentage
-    const pctVal = Math.round((presentDaysCount / totalDaysCount) * 100);
+    // Calculate percentage based on class/working days only (holidays excluded)
+    const pctVal = classDaysCount > 0 ? Math.round((presentDaysCount / classDaysCount) * 100) : 100;
     attendancePercentage.textContent = `${pctVal}%`;
     attendancePercentage.setAttribute("data-count", pctVal);
 

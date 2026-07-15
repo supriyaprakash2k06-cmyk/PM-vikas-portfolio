@@ -1407,6 +1407,12 @@ section:last-of-type {
   color: var(--danger);
 }
 
+.calendar-cell.holiday {
+  background: rgba(100, 116, 139, 0.1);
+  border-color: rgba(100, 116, 139, 0.2);
+  color: var(--text-secondary);
+}
+
 .calendar-cell.empty {
   opacity: 0.15;
   background: none;
@@ -1435,6 +1441,7 @@ section:last-of-type {
 
 .legend-dot.present { background: var(--success); }
 .legend-dot.absent { background: var(--danger); }
+.legend-dot.holiday { background: var(--text-secondary); }
 
 /* Chart Containers styling */
 .chart-container-wrapper {
